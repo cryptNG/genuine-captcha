@@ -1,0 +1,267 @@
+<style>
+@media screen and (min-width: 0px) and (max-width: 1035px){
+    .hamburger-menu{
+        display: inline-block;
+    }
+}
+
+@media screen and (min-width: 1036px){
+    .hamburger-menu{
+        display: none;
+    }
+}
+
+.hamburger-menu{
+    width: 70px;
+}
+
+.hamburger-menu #menu__toggle {
+  opacity: 0;
+}
+.hamburger-menu #menu__toggle:checked + .menu__btn > span {
+  top:22px;
+}
+.hamburger-menu #menu__toggle:checked + .menu__btn > span {
+  transform: rotate(45deg);
+  
+}
+.hamburger-menu #menu__toggle:checked + .menu__btn > span::before {
+  top: 0;
+  transform: rotate(0deg);
+  background-color: white;
+}
+.hamburger-menu #menu__toggle:checked + .menu__btn > span::after {
+  top: 0;
+  transform: rotate(90deg);
+  background-color: white;
+}
+.hamburger-menu #menu__toggle:checked ~ .menu__box {
+  left: 0 !important;
+}
+.hamburger-menu .menu__btn {
+      position: fixed;
+    top: 57px;
+    left: 20px;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    z-index: 1;
+    padding: 10px;
+    border-radius: 42px;
+    box-shadow: 3px 3px 5px black;
+    background-color: #0073aaa3;
+
+}
+.hamburger-menu .menu__btn > span,
+.hamburger-menu .menu__btn > span::before,
+.hamburger-menu .menu__btn > span::after {
+  display: block;
+  position: absolute;
+  width: 24px;
+  height: 2px;
+  top: 13px;
+  background-color: white;
+  transition-duration: .25s;
+}
+.hamburger-menu .menu__btn > span::before {
+  content: '';
+  top: 8px;
+}
+.hamburger-menu .menu__btn > span::after {
+  content: '';
+  top: 16px;
+}
+.hamburger-menu .menu__box {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: 300px;
+  height: 100%;
+  margin: 0;
+  padding: 110px 0;
+  list-style: none;
+  background-color: #ECEFF1;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, .4);
+  transition-duration: .25s;
+}
+.hamburger-menu .menu__item {
+  display: block;
+  padding: 12px 24px;
+  color: #333;
+  font-family: 'Roboto', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  text-decoration: none;
+  transition-duration: .25s;
+}
+.hamburger-menu .menu__item:hover {
+  background-color: #CFD8DC;
+}
+
+div.dashbar
+{
+    top: 0px;
+    left:0px;
+    background-color: #0073aaa3;
+    border-bottom: 1px solid #55bff08f;
+    width: 100%;
+    height: 80px;
+    position: fixed;
+    z-index: 2147483647;
+    box-shadow: 6px 6px 6px 3px rgb(0 0 0 / 22%), 0 4px 4px 0 rgb(0 0 0 / 35%);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+
+    -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
+       -moz-animation: fadein 1s; /* Firefox < 16 */
+        -ms-animation: fadein 1s; /* Internet Explorer */
+         -o-animation: fadein 1s; /* Opera < 12.1 */
+            animation: fadein 1s;
+}
+
+div.dashbar a{
+    border-bottom:none;
+}
+
+nav {
+  width: 100%;
+  position: relative;
+}
+
+nav .cryptng-logo{
+  display: inline-block;
+}
+
+nav .classic-menu {
+    position: absolute;
+    top: 20px;
+    line-height: 50px;
+    margin-left: 20px;
+}
+
+nav .classic-menu a{
+  color: white;
+  text-decoration: none;
+}
+
+
+
+nav .classic-menu .active:not(.live-app) a {
+  /* text-decoration: underline; */
+  font-weight: bold;
+  border-width: 0px 0px 2px 0px;
+  border-style: solid;
+}
+
+nav .classic-menu :not(.live-app) a:hover{
+  border-width: 0px 0px 2px 0px;
+  border-style: solid;
+}
+
+nav .classic-menu .active.live-app {
+  /* text-decoration: underline; */
+
+  border-width: 0px 0px 2px 0px;
+  border-style: solid;
+}
+
+nav .classic-menu .live-app:hover{
+  border-width: 0px 0px 2px 0px;
+  border-style: solid;
+}
+
+@media screen and (min-width: 0px) and (max-width:1035px){
+  nav .classic-menu {
+      display: none;
+  }
+}
+
+@media screen and (min-width: 1036px){
+  nav .classic-menu{
+    display: inline-block;
+  }
+}
+
+
+
+nav .cryptng-logo svg {
+  width: 45mm !important;
+  position: relative;
+  left: 5px;
+  top: 2px;
+}
+
+
+nav .classic-menu>div {
+  display: inline-block;
+  margin-right: 10px;
+  margin-left: 10px;
+  padding-top: 3px;
+  font-size: larger;
+}
+
+nav .liveapp-menu {
+    position: absolute;
+    top: 20px;
+    line-height: 50px;
+    margin-left: 40px;
+    display: none;
+}
+
+@media screen and (min-width: 400px) and (max-width:1035px){
+  nav .liveapp-menu {
+      display: inline-block;
+  }
+}
+
+nav .live-app a {
+  border: 3px solid #21fff466;
+  border-radius: 10px;
+  text-decoration: none;
+  padding: 3px 5px;
+  color: white;
+  background-color: #00538aa3;
+
+}
+
+</style>
+<div class="dashbar">
+
+    <nav>
+        <CryptngLogo @project="Pdf Weaver"></CryptngLogo>
+        <div class="hamburger-menu">
+            <input id="menu__toggle" type="checkbox" />
+            <label class="menu__btn" for="menu__toggle">
+                <span></span>
+            </label>
+
+            <ul class="menu__box">
+                <li><LinkTo class="menu__item {{if (eq @route 'application') 'active'}}" @route="application">Home</LinkTo></li>
+                <li><LinkTo class="menu__item {{if (eq @route 'usecases') 'active'}}" @route="usecases">Use Cases</LinkTo></li>
+                <li><LinkTo class="menu__item {{if (eq @route 'features') 'active'}}" @route="features">Features</LinkTo></li>
+                <li><LinkTo class="menu__item {{if (eq @route 'live-app') 'active'}} live-app" @route="app">Live App</LinkTo></li>
+                <li><LinkTo class="menu__item {{if (eq @route 'why') 'active'}}" @route="why">Why Genuine Captcha</LinkTo></li>
+                <li><LinkTo class="menu__item {{if (eq @route 'how-to') 'active'}}" @route="how-to">Api How-To</LinkTo></li>
+                <li><a class="menu__item {{if (eq @route 'github') 'active'}}" href="https://github.com/cryptNG/genuine-captcha" target="_blank">Github ↗</a></li>
+            </ul>
+        </div>
+        
+        <div class="classic-menu">
+            <div class="small-caps {{if (eq @route 'application') 'active'}}"><LinkTo @route="application">Home</LinkTo></div>|
+            <div class="small-caps {{if (eq @route 'usecases') 'active'}}"><LinkTo @route="usecases">Use Cases</LinkTo></div>|
+            <div class="small-caps {{if (eq @route 'features') 'active'}}"><LinkTo @route="features">Features</LinkTo></div>|
+            <div class="small-caps {{if (eq @route 'live-app') 'active'}} live-app"><LinkTo @route="app">Live App</LinkTo></div>|
+            <div class="small-caps {{if (eq @route 'why') 'active'}}"><LinkTo @route="why">Why Genuine Captcha</LinkTo></div>|
+            <div class="small-caps {{if (eq @route 'how-to') 'active'}}"><LinkTo @route="how-to">Api How-To</LinkTo></div>|
+            <div class="small-caps {{if (eq @route 'github') 'active'}}"><a href="https://github.com/cryptNG/genuine-captcha" target="_blank">Github ↗</a></div>
+        </div>
+        <div class="liveapp-menu">
+            {{#if (not (eq @route 'live-app'))}}<div class="small-caps {{if (eq @route 'live-app') 'active'}} live-app"><LinkTo @route="app">Live App</LinkTo></div>{{/if}}
+        </div>
+    </nav>
+    {{yield}}
+</div>
