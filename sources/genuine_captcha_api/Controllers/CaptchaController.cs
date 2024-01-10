@@ -1,6 +1,7 @@
 ﻿
 using genuine_captcha_api.services;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using System.Net;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -51,6 +52,15 @@ namespace genuine_captcha_api.Controllers
                 SecretAsBase64 = Convert.ToBase64String(captcha.enc)
             };
             HttpContext.Response.Cookies.Delete(".AspNetCore.Session");
+            HttpContext.Response.Headers.Remove("Access-Control-Allow-Origin");
+            if (HttpContext.Request.Headers.ContainsKey("Origin"))
+            {
+                var origin = HttpContext.Request.Headers["Origin"];
+                HttpContext.Response.Headers.Add("Access-Control-Allow-Origin", origin);
+
+            }else HttpContext.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+
+
             return new ContentResult()
             {
 
