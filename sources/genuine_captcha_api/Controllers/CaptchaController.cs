@@ -50,6 +50,7 @@ namespace genuine_captcha_api.Controllers
                 ImageAsBase64 = Convert.ToBase64String(captcha.img),
                 SecretAsBase64 = Convert.ToBase64String(captcha.enc)
             };
+            HttpContext.Response.Cookies.Remove(".AspNetCore.Session");
             return new ContentResult()
             {
 
