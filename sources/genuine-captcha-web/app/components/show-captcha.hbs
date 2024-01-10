@@ -1,9 +1,11 @@
 <style>
     #captcha-container{
-      width: 200px;
+      width: 100%;
       min-height: 110px;
-      padding-left: calc(50% - 100px);
-      position: relative;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
     }
     #captcha-container img {
           width: 200px;
@@ -13,12 +15,23 @@
   }
   #captcha-container .lds-ring
   {
-    margin-left: calc(25% - 10px);
-    margin-top:50px;
+    margin-left: calc(50% - 20px);
+    margin-top: 40px;
     position: absolute;
   }
   #captcha-container .lds-ring div{
   border-color: #29b0f3 transparent transparent transparent;
+}
+
+  .copyright-text {
+    max-width: 190px;
+    margin-left: 20px;
+}
+
+.captcha-image {
+    min-width: 200px;
+    min-height: 100px;
+    position: relative;
 }
 
 span.reload-token {
@@ -26,21 +39,70 @@ span.reload-token {
     color: #054a8f;
     font-size: large;
     position: relative;
-    left: -30px;
-    bottom: 18px;
+    left: -42px;
+    bottom: -12px;
     cursor: pointer;
 }
+
+@media screen and (min-width: 800px){
+  span.reload-token {
+ 
+    bottom: 5px;
+}
+}
+
+button.btn {
+    width: 100%;
+    border-radius: 8px;
+    text-decoration: none;
+    background-color: #097a9c;
+    opacity: 1;
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.22), 0 4px 4px 0 rgba(0, 0, 0, 0.35);
+    cursor: pointer;
+    outline: 1px solid #0303038c;
+    outline: none;
+    transition: 0.3s;
+
+  }
+
+
+  button.btn:disabled {
+    background-color: gray;
+  }
+
+  button.btn:hover {
+
+    text-decoration: none;
+    background-color: #ffffff;
+    color: #000000;
+    padding: 10px 20px;
+    border: none;
+    outline: 1px solid #099c298c;
+  }
+
+  button.btn:hover:disabled {
+    background-color: gray;
+    cursor: not-allowed;
+    color: lightgray;
+    outline: none;
+  }
   </style>
-  <div>
-    <div class="title" {{on "click" this.doNothing}}>Genuine Captcha Try Out</div>
-    <div class="content" {{on "click" this.doNothing}}>
+ 
+    <h5 class="title" {{on "click" this.doNothing}}>Solve the Genuine Captcha to reveal Haiku of the Day!</h5>
+   
     
    
  <div id="captcha-container">
-    {{#if this.isGettingCaptcha}}
+    
+    <div class="captcha-image">
+      {{#if this.isGettingCaptcha}}
       <Ux::InlineLoader @active={{true}} />
     {{/if}}
-  <h5 class="copyright-text"><span class="small-caps">Genuine Captcha</span> &#169;CryptNg<sup>&#174;</sup> to prove you are human <span class="reload-token" {{on "click" this.getCaptcha}}>&#x27f3;</span> </h5>
+    </div>
+  <h6 class="copyright-text"><span class="small-caps">Genuine Captcha</span> &#169;CryptNg<sup>&#174;</sup> to prove you are human <span class="reload-token" {{on "click" this.getCaptcha}}>&#x27f3;</span> </h6>
  </div>
   
  <br/>
@@ -50,6 +112,7 @@ span.reload-token {
   @isWorking={{this.isWorking}} 
   @onContentChange={{this.updateEnteredCaptchaContent}}  
   @invalidMessage={{this.invalidCaptchaMessage}}
+  @isInvalidInput={{this.isInvalidSolution}}
   @inputContent={{this.enteredCaptchaContent}}
   @clearInput={{this.clearCaptchaContent}}>
    <:labelContent>Enter Equation Solution</:labelContent>
@@ -57,9 +120,8 @@ span.reload-token {
  <br/>
  <button class="btn" type="button" {{on 'click'
       this.solveCaptcha}}><span>
-        <Ux::InlineLoader @active={{this.isWorking}} />Unlock Haiku
+        <Ux::InlineLoader @active={{this.isWorking}} />Unlock Haiku of the Day
       </span></button>
-    </div>
+ 
      
     
-  </div>

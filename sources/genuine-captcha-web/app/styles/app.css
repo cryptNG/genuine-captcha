@@ -12,7 +12,7 @@
 
 body{
         
-  background: linear-gradient(#004468 50%, #40cbff);
+  background: linear-gradient(color(display-p3 0.000000 0.266667 0.407843 / 1.000000) 50%, color(display-p3 0.250980 0.796078 1.000000 / 1.000000));
   margin:0;
   height: 100vh;
   width: 100vw;
@@ -212,12 +212,12 @@ body{
   display: flex;
   color: darkgray;
   position: relative;
-  margin-bottom: 15px;
+  margin-bottom: 1.7rem;
 }
 
 .inputbox button.btn-clear-input {
-  position: relative;
-  right: 25px;
+  position: absolute;
+  right: 5px;
   background-color: #ffffff;
   box-shadow: 0px 0px 5px 5px rgba(255, 255, 255, 0.627);
   border: 0;
@@ -271,12 +271,25 @@ body{
 .inputbox label {
   position: absolute;
   transform-origin: 0% 100%;
-  transform: translateY(12px) translateX(calc(50% - 100px));
+  transform: translateY(10px) translateX(calc(50% - 100px));
   transition: all 0.5s ease-in-out;
   cursor: text;
   color:black;
   width:100%;
+  font-size: smaller;
 }
+
+.inputbox .invalid-input.active {
+  position: absolute;
+  bottom: -1.7rem;
+  font-size: smaller;
+  background-color: lightcoral;
+  border-radius: 5px;
+  border: 1px solid red;
+  color: black;
+  padding: 0 5px;
+}
+
 .inputbox input[type=text]:not(.browser-default)+label:after{
   display: block;
   content: "";
@@ -288,9 +301,10 @@ body{
 .inputbox input[type="text"]:focus~label,
 .inputbox>label:not(.label-icon).active {
   -webkit-transform: translateY(-14px) scale(0.8);
-  transform: translateY(-20px) scale(0.9);
+  transform: translateY(-23px) scale(0.9);
   -webkit-transform-origin: 0 0;
   transform-origin: 0 0;
+  color: white;
 }
 
 
@@ -802,6 +816,7 @@ button.ripple {
   .card .card-title {
     padding-top: 10px;
    max-width: 45rem;
+   white-space: nowrap;
   }
 }
 
@@ -969,7 +984,7 @@ button.ripple {
 .splash-title span{
     position: absolute;
     top: 30px;
-    color: #fff80b;
+    color: color(display-p3 1.000000 0.972549 0.043137 / 1.000000);
     font-size: 4rem;
     max-width: 500px;
     text-align: center;
@@ -1054,7 +1069,7 @@ img.title-mobile-splash{
 }
 
 .parallax-layer.layer2 {
-    background: linear-gradient(#002f48 800px, transparent);
+    background: linear-gradient(color(display-p3 0.000000 0.184314 0.282353 / 1.000000) 800px, transparent);
     border-top: 1px solid #1db0e4;
     box-shadow: 0 0px 15px #004468;
   top: 50rem;

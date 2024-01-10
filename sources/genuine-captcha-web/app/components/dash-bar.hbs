@@ -103,7 +103,7 @@ div.dashbar
 {
     top: 0px;
     left:0px;
-    background-color: #0073aaa3;
+    background-color: color(display-p3 0.000000 0.450980 0.666667 / 0.666667);
     border-bottom: 1px solid #55bff08f;
     width: 100%;
     height: 80px;
@@ -185,6 +185,10 @@ nav .cryptng-logo svg {
   top: 2px;
 }
 
+nav .cryptng-logo svg .svg-copyright {
+    font-size: small;
+}
+
 
 nav .classic-menu>div {
   display: inline-block;
@@ -192,6 +196,7 @@ nav .classic-menu>div {
   margin-left: 10px;
   padding-top: 3px;
   font-size: larger;
+  padding-bottom: 10px;
 }
 
 nav .liveapp-menu {
@@ -234,7 +239,7 @@ nav .live-app a {
                 <li><LinkTo class="menu__item {{if (eq @route 'usecases') 'active'}}" @route="usecases">Use Cases</LinkTo></li>
                 <li><LinkTo class="menu__item {{if (eq @route 'features') 'active'}}" @route="features">Features</LinkTo></li>
                 <li><LinkTo class="menu__item {{if (eq @route 'live-app') 'active'}} live-app" @route="app">Live App</LinkTo></li>
-                <li><LinkTo class="menu__item {{if (eq @route 'why') 'active'}}" @route="why">Why Genuine Captcha ©</LinkTo></li>
+                <li><LinkTo class="menu__item {{if (eq @route 'why') 'active'}}" @route="why">Why Genuine Captcha<sup>©</sup></LinkTo></li>
                 <li><LinkTo class="menu__item {{if (eq @route 'how-to') 'active'}}" @route="how-to">Api How-To</LinkTo></li>
                 <li><a class="menu__item {{if (eq @route 'github') 'active'}}" href="https://github.com/cryptNG/genuine-captcha" target="_blank">Github ↗</a></li>
             </ul>
@@ -245,7 +250,7 @@ nav .live-app a {
             <div class="small-caps {{if (eq @route 'usecases') 'active'}}"><LinkTo @route="usecases">Use Cases</LinkTo></div>|
             <div class="small-caps {{if (eq @route 'features') 'active'}}"><LinkTo @route="features">Features</LinkTo></div>|
             <div class="small-caps {{if (eq @route 'live-app') 'active'}} live-app"><LinkTo @route="app">Live App</LinkTo></div>|
-            <div class="small-caps {{if (eq @route 'why') 'active'}}"><LinkTo @route="why">Why Genuine Captcha ©</LinkTo></div>|
+            <div class="small-caps {{if (eq @route 'why') 'active'}}"><LinkTo @route="why">Why Genuine Captcha<sup>©</sup></LinkTo></div>|
             <div class="small-caps {{if (eq @route 'how-to') 'active'}}"><LinkTo @route="how-to">Api How-To</LinkTo></div>|
             <div class="small-caps {{if (eq @route 'github') 'active'}}"><a href="https://github.com/cryptNG/genuine-captcha" target="_blank">Github ↗</a></div>
         </div>

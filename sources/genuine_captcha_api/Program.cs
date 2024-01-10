@@ -12,14 +12,14 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDistributedMemoryCache();
+//builder.Services.AddDistributedMemoryCache();
 
-builder.Services.AddSession(options =>
-{
-    options.IdleTimeout = TimeSpan.FromSeconds(3600);
+// builder.Services.AddSession(options =>
+// {
+//     options.IdleTimeout = TimeSpan.FromSeconds(3600);
 
-    options.Cookie.IsEssential = true;
-});
+//     options.Cookie.IsEssential = true;
+// });
 //builder.Services.AddHostedService<EvidencingService>();
 
 builder.Services.AddCors(options =>
@@ -49,9 +49,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseSession();
+//app.UseSession();
 
-app.UseAuthorization();
+//app.UseAuthorization();
 
 app.MapControllers();
 
