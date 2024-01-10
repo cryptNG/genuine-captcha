@@ -36,7 +36,7 @@ namespace genuine_captcha_api.services
             Random ran = new Random(Convert.ToInt32(DateTime.Now.Ticks % int.MaxValue) - 1894);
             int[] calculation = new int[] { ran.Next(10, 20), ran.Next(0, 100) % 2, ran.Next(0, 10) };
             int solution = calculation[0] + calculation[2] * (calculation[1] == 0 ? -1 : 1);
-            context.Session.SetInt32("CaptchaSolution", solution);
+         
             Aes myAes = Aes.Create();
             using (SHA256 mySHA256 = SHA256.Create())
             {
