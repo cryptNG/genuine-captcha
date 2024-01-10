@@ -34,6 +34,16 @@ namespace genuine_captcha_api.Controllers
                 ImageAsBase64 = Convert.ToBase64String(captcha.img),
                 SecretAsBase64 = Convert.ToBase64String(captcha.enc)
             };
+
+            HttpContext.Response.Cookies.Delete(".AspNetCore.Session");
+            HttpContext.Response.Headers.Remove("Access-Control-Allow-Origin");
+            if (HttpContext.Request.Headers.ContainsKey("Origin"))
+            {
+                var origin = HttpContext.Request.Headers["Origin"];
+                HttpContext.Response.Headers.Add("Access-Control-Allow-Origin", origin);
+
+            }else HttpContext.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+            
             return new ContentResult()
             {
 
@@ -73,15 +83,25 @@ namespace genuine_captcha_api.Controllers
         [HttpGet("verify")]
         public ActionResult VerifyCaptcha(string captchaSolution, string captchaSecret)
         {
+            HttpContext.Response.Cookies.Delete(".AspNetCore.Session");
+            HttpContext.Response.Headers.Remove("Access-Control-Allow-Origin");
+            if (HttpContext.Request.Headers.ContainsKey("Origin"))
+            {
+                var origin = HttpContext.Request.Headers["Origin"];
+                HttpContext.Response.Headers.Add("Access-Control-Allow-Origin", origin);
+
+            }else HttpContext.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+
             if (!Int32.TryParse(captchaSolution, out int n))
             {
                 return StatusCode(400, "The captcha provided was not a number");
             }
-            Console.WriteLine("The captcha secret is: "+captchaSecret);
+           
             if (!CaptchaProvider.CheckCaptchaResult(HttpContext, captchaSolution, captchaSecret, _secret))
             {
                 return new ContentResult() { Content = "The Captcha was incorrect!", ContentType = "text", StatusCode = 401 };
             }
+
 
             return new OkResult();
         }
@@ -90,6 +110,15 @@ namespace genuine_captcha_api.Controllers
         [HttpGet("verify/custom")]
         public ActionResult VerifyCaptchaCustom(string captchaSolution, string captchaSecret, string customSecret)
         {
+            HttpContext.Response.Cookies.Delete(".AspNetCore.Session");
+            HttpContext.Response.Headers.Remove("Access-Control-Allow-Origin");
+            if (HttpContext.Request.Headers.ContainsKey("Origin"))
+            {
+                var origin = HttpContext.Request.Headers["Origin"];
+                HttpContext.Response.Headers.Add("Access-Control-Allow-Origin", origin);
+
+            }else HttpContext.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+
             if (!Int32.TryParse(captchaSolution, out int n))
             {
                 return StatusCode(400, "The captcha provided was not a number");
