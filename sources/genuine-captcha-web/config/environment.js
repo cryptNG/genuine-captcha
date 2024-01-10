@@ -19,6 +19,8 @@ module.exports = function (environment) {
     },
   };
 
+  ENV.captchaApiHost = 'https://yitc.ddns.net:5100';
+
   if (environment === 'development') {
     // ENV.APP.LOG_RESOLVER = true;
     // ENV.APP.LOG_ACTIVE_GENERATION = true;

@@ -66,6 +66,7 @@ namespace genuine_captcha_api.Controllers
             {
                 return StatusCode(400, "The captcha provided was not a number");
             }
+            Console.WriteLine("The captcha secret is: "+captchaSecret);
             if (!CaptchaProvider.CheckCaptchaResult(HttpContext, captchaSolution, captchaSecret))
             {
                 return new ContentResult() { Content = "The Captcha was incorrect!", ContentType = "text", StatusCode = 401 };

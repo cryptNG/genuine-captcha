@@ -7,6 +7,10 @@ module.exports = function (defaults) {
     prember: {
       urls: [
         '/',
+        '/features',
+        '/how-to',
+        '/usecases',
+        '/why',
       ]
     }
   });
