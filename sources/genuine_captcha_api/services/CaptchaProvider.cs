@@ -11,12 +11,12 @@ namespace genuine_captcha_api.services
 {
     public static class CaptchaProvider
     {
-        public static bool CheckCaptchaResult(HttpContext context, string userInput, string captchaSecret)
+        public static bool CheckCaptchaResult(HttpContext context, string userInput, string captchaSecret,string secret)
         {
             Aes myAes = Aes.Create();
             using (SHA256 mySHA256 = SHA256.Create())
             {
-                myAes.Key = mySHA256.ComputeHash(Encoding.Default.GetBytes("my - secret"));
+                myAes.Key = mySHA256.ComputeHash(Encoding.Default.GetBytes(secret));
             }
             byte[] enciv = Convert.FromBase64String(captchaSecret);
 
