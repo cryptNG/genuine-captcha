@@ -2928,7 +2928,7 @@ broccoli-config-replace@^1.1.2:
     debug "^2.2.0"
     fs-extra "^0.24.0"
 
-broccoli-debug@^0.6.1, broccoli-debug@^0.6.4, broccoli-debug@^0.6.5:
+broccoli-debug@^0.6.1, broccoli-debug@^0.6.3, broccoli-debug@^0.6.4, broccoli-debug@^0.6.5:
   version "0.6.5"
   resolved "https://registry.yarnpkg.com/broccoli-debug/-/broccoli-debug-0.6.5.tgz#164a5cdafd8936e525e702bf8f91f39d758e2e78"
   integrity sha512-RIVjHvNar9EMCLDW/FggxFRXqpjhncM/3qq87bn/y+/zR9tqEkHvTqbyOc4QnB97NO2m6342w4wGkemkaeOuWg==
@@ -5645,7 +5645,7 @@ expand-tilde@^2.0.0, expand-tilde@^2.0.2:
   dependencies:
     homedir-polyfill "^1.0.1"
 
-express@^4.10.7, express@^4.18.1:
+express@^4.10.7, express@^4.18.1, express@^4.18.2:
   version "4.18.2"
   resolved "https://registry.yarnpkg.com/express/-/express-4.18.2.tgz#3fabe08296e930c796c19e3c516979386ba9fd59"
   integrity sha512-5/PsL6iGPdfQ/lKM1UuielYgv3BUoJfz1aUwU9vHZ+J7gyvwdQXFEBIEIaxeGf0GIcreATNyBExtalisDbuMqQ==
@@ -5792,7 +5792,7 @@ fastboot-transform@^0.1.3:
     broccoli-stew "^1.5.0"
     convert-source-map "^1.5.1"
 
-fastboot@4.1.2:
+fastboot@4.1.2, fastboot@^4.1.1:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/fastboot/-/fastboot-4.1.2.tgz#65627882d03962818f0f5331ca052d2da209ba98"
   integrity sha512-VJLmF0xdCNwIIuA7DQtN1KTAKfEGsbZGJ0cfKh64h6DeMh3Fhr2FCCxkPh8zYqGoqzjXFdFbtk60WS3f6HKqBg==
@@ -9072,6 +9072,20 @@ prelude-ls@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.2.1.tgz#debc6489d7a6e6b0e7611888cec880337d316396"
   integrity sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==
+
+prember@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/prember/-/prember-2.0.0.tgz#0df6f2d1c6aef056f91627ca1d7c283984bdaf28"
+  integrity sha512-mNlTBBTC6ToJAqTG98pPAw9Kbg/yrRql21PoHMn0/MMQvFszR5e6w1NuOP76mfKQLFkHvxsKZcgibwjnRAKeMg==
+  dependencies:
+    broccoli-debug "^0.6.3"
+    broccoli-merge-trees "^4.2.0"
+    broccoli-plugin "^4.0.7"
+    chalk "^4.0.0"
+    ember-cli-babel "^7.26.11"
+    express "^4.18.2"
+    fastboot "^4.1.1"
+    mkdirp "^3.0.1"
 
 prettier-linter-helpers@^1.0.0:
   version "1.0.0"

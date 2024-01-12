@@ -10,7 +10,7 @@ module.exports = function (defaults) {
         '/features',
         '/how-to',
         '/usecases',
-        '/why',
+        '/why'
       ]
     }
   });
