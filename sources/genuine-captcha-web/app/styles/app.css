@@ -13,185 +13,24 @@
 
 
 
-
-
-
-
-
-@media screen and (min-width: 0px) and (max-width: 600px){
-
-  .auth-actions{
-    width: 300px;
-  }
-
-  .sign-in-btn{
-    margin-top: 5px;
-  }
-
-  .auth-actions button{
-    width: 190px;
-  }
-
-  .auth-actions span{
-    display: none;
-  }
-
-
-  .dashbar .token-info.active {
-    transform: translateY(100px);
-  }
-
-  .auth-state.active{
-    opacity: 0;
-  }
-
-  .auth-state.active.show {
-    opacity: 1;
-    top: 80px;
-    background-color: #3e3e3ee9;
-    width: 100%;
-    left: 0px;
-    padding-left: 20px;
-    box-shadow: 6px 6px 6px 3px rgb(0 0 0 / 22%), 0 4px 4px 0 rgb(0 0 0 / 35%);
-  }
-}
-
-@media screen and (min-width: 601px){
-  .auth-state-info.info{
-    display: none;
-  }
-  .auth-actions{
-    width: auto;
-    min-width: 390px;
-    position: absolute;
-    top: 20px; 
-    right: 10px;
-    transition: top 0.5s ease-in-out;
-  }
-
-  .auth-actions.auth-state-active{
-
-    top: 13px; 
-  }
-
-  .auth-state.active{
-    opacity: 1;
-  }
-
-  .dashbar .token-info.active {
-    transform: translateY(80px);
-  }
-  
-}
-
-.dashbar .token-info {
-  z-index: 0;
-  opacity: 0;
-  transform: translateY(50px);
-  position: fixed;
-  top: 0;
-  right: 10px;
-  width: 510px;
-  background-color: #3e3e3ee9;
-  padding: 5px 10px;
-  border-radius: 0 0 10px 10px;
-  font-size: small;
-  transition: all 0.3s ease-in-out;
-  box-shadow: 6px 6px 6px 3px rgb(0 0 0 / 22%), 0 4px 4px 0 rgb(0 0 0 / 35%);
-}
-
-.dashbar .token-info.active {
-  z-index: 1;
-  opacity: 1;
-}
-
-.dashbar .token-info .copy-action, 
-.dashbar .token-info .hide-action{
-  cursor: pointer;
-}
-
-.auth-actions button {
-  background-color: transparent;
-  border: 3px solid white;
-  border-radius: 10px;
-  line-height: 1.5rem;
+body{
+        
+  background: linear-gradient(color(display-p3 0.000000 0.184314 0.282353 / 1.000000) 50% ,color(display-p3 0.000000 0.266667 0.407843 / 1.000000) );
+  margin:0;
+  height: 100vh;
+  width: 100vw;
   color: white;
-  font-weight: normal;
-  letter-spacing: 2px;
-  cursor: pointer;
-}
-
-.auth-actions span{
-  padding: 0 10px;
-}
-
-.auth-actions .sign-in-btn.active {
-  color: lightgoldenrodyellow;
-  border-color: gold;
-}
-
-.auth-state {
-  position: absolute;
-  right: -600px;
-  top: 55px;
-  opacity: 0;
-  transition: all 0.3s ease-in-out;
-}
-
-.auth-state.active {
-  position: absolute;
-  right: 10px;
-  color: gold;
-  transition: all 0.3s ease-in-out;
-}
-
-
-
-.auth-state-info.info.active{
-  opacity: 1;
-  z-index: 999;
-}
-
-.auth-state-info.info{
-  opacity: 0;
-  position: absolute;
-  right: 200px;
-  top: 48px;
-  background-color: gold;
-}
-
-.show-token-info.info{
-  padding: 0 8px 0 6px;
-  font-weight: bold;
-  font-size: 0.8rem;
-  border-radius: 10px;
-  vertical-align: text-bottom;
-  position: relative;
-  left: -4px;
-  top: 1px;
-  background-color: lightblue;
-}
-
-.info{
   
-  background-color: white;
-  padding: 0 10px 0 8px;
-  line-height: 22px;
-  color: #2e2e2e;
-  font-weight: bold;
-  font-style: italic;
-  border-radius: 12px;
-  cursor: pointer;
+    
 }
 
-.auth-state .value {
-  color: lightblue;
+.small-caps{
+  font-variant: small-caps;
 }
- 
-.auth-state .value.token {
-  cursor: pointer;
-}
- 
+
+
+
+
 
 .inputbox {
   width: 100%;

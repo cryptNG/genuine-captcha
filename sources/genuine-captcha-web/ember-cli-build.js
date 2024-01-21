@@ -15,6 +15,7 @@ module.exports = function (defaults) {
     }
   });
 
+ // app.import('./public/scripts/ai-term.js');
   // Use `app.import` to add additional libraries to the generated
   // output files.
   //
