@@ -19,7 +19,7 @@ module.exports = function (environment) {
     },
   };
 
-  ENV.captchaApiHost = 'https://yitc.ddns.net:5100';
+  ENV.captchaApiHost = 'https://api.genuine-captcha.io';
 
   if (environment === 'development') {
     // ENV.APP.LOG_RESOLVER = true;

@@ -1,6 +1,8 @@
 'use strict';
+const  webpack = require( 'webpack');
 
 const EmberApp = require('ember-cli/lib/broccoli/ember-app');
+
 
 module.exports = function (defaults) {
   let app = new EmberApp(defaults, {
@@ -10,11 +12,12 @@ module.exports = function (defaults) {
         '/features',
         '/how-to',
         '/usecases',
-        '/why',
+        '/why'
       ]
     }
   });
 
+ // app.import('./public/scripts/ai-term.js');
   // Use `app.import` to add additional libraries to the generated
   // output files.
   //

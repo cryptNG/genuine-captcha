@@ -277,8 +277,8 @@ export default class ShowCaptchaComponent extends Component {
         '&captchaSecret=' +
         encodeURIComponent(this.captchaSecret),
       {
-        credentials: 'include',
         method: 'GET',
+        mode: "cors",
       }
     );
     if (response.status === 401) {
@@ -306,7 +306,7 @@ export default class ShowCaptchaComponent extends Component {
       await timeout(200);
       const response = await fetch(ENV.captchaApiHost + '/api/captcha/create', {
         method: 'GET',
-        credentials: 'include',
+        mode: "cors",
       });
 
       let json = await response.json();

@@ -241,11 +241,11 @@ code.hljs, code[class*=language-], pre[class*=language-] {
     <p>Initiate a CAPTCHA challenge for your users.</p>
     <p><strong>Endpoint:</strong></p>
     <div class="code-block">
-        GET https://yitc.ddns.net:5100/api/captcha/create
+        GET https://api.genuine-captcha.io/api/captcha/create
     </div>
     <p><strong>Sample Request:</strong></p>
     <pre class="code-block">
-fetch('https://yitc.ddns.net:5100/api/captcha/create')
+fetch('https://api.genuine-captcha.io/api/captcha/create')
   .then(response => response.json())
   .then(data => console.log(data));
     </pre>
@@ -261,14 +261,14 @@ fetch('https://yitc.ddns.net:5100/api/captcha/create')
     <p>After the user solves the CAPTCHA, verify their solution.</p>
     <p><strong>Endpoint:</strong></p>
     <div class="code-block">
-        GET https://yitc.ddns.net:5100/api/captcha/verify?captchaSolution=USER_SOLUTION&captchaSecret=SECRET_FROM_CREATE
+        GET https://api.genuine-captcha.io/api/captcha/verify?captchaSolution=USER_SOLUTION&captchaSecret=SECRET_FROM_CREATE
     </div>
     <p><strong>Sample Request:</strong></p>
     <pre class="code-block">
 const captchaSolution = "21"; // User-provided solution
 const captchaSecret = "apiSecret"; // Secret received from the create call
 
-fetch(`https://yitc.ddns.net:5100/api/captcha/verify?captchaSolution=${captchaSolution}&captchaSecret=${captchaSecret}`)
+fetch(`https://api.genuine-captcha.io/api/captcha/verify?captchaSolution=${captchaSolution}&captchaSecret=${captchaSecret}`)
   .then(response => {
     if(response.ok) {
       console.log("CAPTCHA verified successfully");
@@ -289,13 +289,13 @@ fetch(`https://yitc.ddns.net:5100/api/captcha/verify?captchaSolution=${captchaSo
     <p>Create a CAPTCHA with your own secret.</p>
     <p><strong>Endpoint:</strong></p>
     <div class="code-block">
-        GET https://yitc.ddns.net:5100/api/captcha/create/custom?customSecret=YOUR_OWN_SECRET
+        GET https://api.genuine-captcha.io/api/captcha/create/custom?customSecret=YOUR_OWN_SECRET
     </div>
     <p><strong>Sample Request:</strong></p>
     <pre class="code-block">
 const customSecret = "yourOwnSecret";
 
-fetch(`https://yitc.ddns.net:5100/api/captcha/create/custom?customSecret=${customSecret}`)
+fetch(`https://api.genuine-captcha.io/api/captcha/create/custom?customSecret=${customSecret}`)
   .then(response => response.json())
   .then(data => console.log(data));
     </pre>
@@ -304,7 +304,7 @@ fetch(`https://yitc.ddns.net:5100/api/captcha/create/custom?customSecret=${custo
     <p>Verify the CAPTCHA using your own secret.</p>
     <p><strong>Endpoint:</strong></p>
     <div class="code-block">
-        GET https://yitc.ddns.net:5100/api/captcha/verify/custom?captchaSolution=USER_SOLUTION&captchaSecret=SECRET_FROM_CREATE&customSecret=YOUR_OWN_SECRET
+        GET https://api.genuine-captcha.io/api/captcha/verify/custom?captchaSolution=USER_SOLUTION&captchaSecret=SECRET_FROM_CREATE&customSecret=YOUR_OWN_SECRET
     </div>
     <p><strong>Sample Request:</strong></p>
     <pre class="code-block">
@@ -312,7 +312,7 @@ const captchaSolution = "21";
 const captchaSecret = "apiSecret";
 const customSecret = "yourOwnSecret";
 
-fetch(`https://yitc.ddns.net:5100/api/captcha/verify/custom?captchaSolution=${captchaSolution}&captchaSecret=${captchaSecret}&customSecret=${customSecret}`)
+fetch(`https://api.genuine-captcha.io/api/captcha/verify/custom?captchaSolution=${captchaSolution}&captchaSecret=${captchaSecret}&customSecret=${customSecret}`)
   .then(response => {
     if(response.ok) {
       console.log("CAPTCHA verified with custom secret successfully");
