@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "genuine_captcha_api": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://172.23.240.1:65493;http://172.23.240.1:65494"
+    }
+  }
+}
