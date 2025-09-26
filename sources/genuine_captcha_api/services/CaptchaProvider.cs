@@ -5,26 +5,44 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using SkiaSharp;
-using System.Drawing;
 
 namespace genuine_captcha_api.services
 {
     public static class CaptchaProvider
     {
+        public static int validityInMinutes = 5;
+
         public static bool CheckCaptchaResult(HttpContext context, string userInput, string captchaSecret,string secret)
         {
             Aes myAes = Aes.Create();
-            using (SHA256 mySHA256 = SHA256.Create())
-            {
-                myAes.Key = mySHA256.ComputeHash(Encoding.Default.GetBytes(secret));
+            var triedMinutes = 0;
+            var _nowMinutes = (long)(DateTime.Now.Ticks / TimeSpan.TicksPerMinute);
+            int solution = -1;
+            while(solution<0  && validityInMinutes > triedMinutes){
+                using (SHA256 mySHA256 = SHA256.Create())
+                {
+                    myAes.Key = mySHA256.ComputeHash(Encoding.UTF8.GetBytes(secret + (_nowMinutes - triedMinutes).ToString()));
+                }
+                byte[] enciv = Convert.FromBase64String(captchaSecret);
+
+                byte[] enc = enciv.Take(enciv.Length - 16).ToArray();
+
+                myAes.IV = enciv.TakeLast(16).ToArray();
+
+                
+                try 
+                {
+                    if(Int32.TryParse(DecryptStringFromBytes_Aes(enc, myAes.Key, myAes.IV), out int intSolution)){
+                        solution = intSolution;
+                    }
+                }
+                catch 
+                {
+                    // Invalid/corrupted captcha, continue to next time window
+                }
+
+                triedMinutes++;
             }
-            byte[] enciv = Convert.FromBase64String(captchaSecret);
-
-            byte[] enc = enciv.Take(enciv.Length - 16).ToArray();
-
-            myAes.IV = enciv.TakeLast(16).ToArray();
-
-            int solution = Convert.ToInt32(DecryptStringFromBytes_Aes(enc, myAes.Key, myAes.IV));
 
             return solution == Convert.ToInt32(userInput);
 
@@ -33,14 +51,21 @@ namespace genuine_captcha_api.services
         public static (byte[] img, byte[] enc) GenerateCaptchaImageAsByteArray(HttpContext context, string secret)
         {
 
-            Random ran = new Random(Convert.ToInt32(DateTime.Now.Ticks % int.MaxValue) - 1894);
+            var rngBytes = new byte[4];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(rngBytes);
+            }
+            var ran = new Random(BitConverter.ToInt32(rngBytes, 0));
+
             int[] calculation = new int[] { ran.Next(10, 20), ran.Next(0, 100) % 2, ran.Next(0, 10) };
             int solution = calculation[0] + calculation[2] * (calculation[1] == 0 ? -1 : 1);
          
             Aes myAes = Aes.Create();
             using (SHA256 mySHA256 = SHA256.Create())
             {
-                myAes.Key = mySHA256.ComputeHash(Encoding.Default.GetBytes(secret));
+                var _nowMinutes = (long)(DateTime.Now.Ticks / TimeSpan.TicksPerMinute);
+                myAes.Key = mySHA256.ComputeHash(Encoding.UTF8.GetBytes(secret + _nowMinutes.ToString()));
             }
             byte[] encrypted = EncryptStringToBytes_Aes(solution.ToString(), myAes.Key, myAes.IV);
             IEnumerable<byte> enciv = encrypted.Concat(myAes.IV);

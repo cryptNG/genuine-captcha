@@ -12,7 +12,6 @@ namespace genuine_captcha_api.Controllers
     [Route("api/captcha")]
     public class CaptchaController : ControllerBase
     {
-        private string _test_secretKey;
         private IConfiguration _configuration;
         private readonly ILogger<CaptchaController> _logger;
         private string _secret;
@@ -32,8 +31,13 @@ namespace genuine_captcha_api.Controllers
             var resJson = new
             {
                 ImageAsBase64 = Convert.ToBase64String(captcha.img),
-                SecretAsBase64 = Convert.ToBase64String(captcha.enc)
+                SecretAsBase64 = Convert.ToBase64String(captcha.enc),
+                validTill= DateTimeOffset.Now.AddMinutes(CaptchaProvider.validityInMinutes).ToUnixTimeMilliseconds()
             };
+
+
+            AddCorsHeaders();
+
             return new ContentResult()
             {
 
@@ -49,16 +53,11 @@ namespace genuine_captcha_api.Controllers
             var resJson = new
             {
                 ImageAsBase64 = Convert.ToBase64String(captcha.img),
-                SecretAsBase64 = Convert.ToBase64String(captcha.enc)
+                SecretAsBase64 = Convert.ToBase64String(captcha.enc),
+                validTill=DateTimeOffset.Now.AddMinutes(CaptchaProvider.validityInMinutes).ToUnixTimeMilliseconds()
             };
-            HttpContext.Response.Cookies.Delete(".AspNetCore.Session");
-            HttpContext.Response.Headers.Remove("Access-Control-Allow-Origin");
-            if (HttpContext.Request.Headers.ContainsKey("Origin"))
-            {
-                var origin = HttpContext.Request.Headers["Origin"];
-                HttpContext.Response.Headers.Add("Access-Control-Allow-Origin", origin);
 
-            }else HttpContext.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+            AddCorsHeaders();
 
 
             return new ContentResult()
@@ -73,15 +72,19 @@ namespace genuine_captcha_api.Controllers
         [HttpGet("verify")]
         public ActionResult VerifyCaptcha(string captchaSolution, string captchaSecret)
         {
+
+            AddCorsHeaders();
+
             if (!Int32.TryParse(captchaSolution, out int n))
             {
                 return StatusCode(400, "The captcha provided was not a number");
             }
-            Console.WriteLine("The captcha secret is: "+captchaSecret);
+           
             if (!CaptchaProvider.CheckCaptchaResult(HttpContext, captchaSolution, captchaSecret, _secret))
             {
-                return new ContentResult() { Content = "The Captcha was incorrect!", ContentType = "text", StatusCode = 401 };
+                return new ContentResult() { Content = "The Captcha was incorrect!", ContentType = "text/plain", StatusCode = 401 };
             }
+
 
             return new OkResult();
         }
@@ -90,16 +93,47 @@ namespace genuine_captcha_api.Controllers
         [HttpGet("verify/custom")]
         public ActionResult VerifyCaptchaCustom(string captchaSolution, string captchaSecret, string customSecret)
         {
+            AddCorsHeaders();
+
+            if (string.IsNullOrEmpty(customSecret))
+            {
+                return StatusCode(400, "Custom secret is required");
+            }
             if (!Int32.TryParse(captchaSolution, out int n))
             {
                 return StatusCode(400, "The captcha provided was not a number");
             }
-            if (!CaptchaProvider.CheckCaptchaResult(HttpContext, captchaSolution, captchaSecret, _secret))
+            try{
+                if (!CaptchaProvider.CheckCaptchaResult(HttpContext, captchaSolution, captchaSecret, customSecret))
+                {
+                    return new ContentResult() { Content = "The Captcha was incorrect!", ContentType = "text/plain", StatusCode = 401 };
+                }
+            }catch (Exception ex)
             {
-                return new ContentResult() { Content = "The Captcha was incorrect!", ContentType = "text", StatusCode = 401 };
+                _logger.LogError(ex, "Error verifying captcha");
+                return StatusCode(400, "Invalid captcha format");
             }
 
             return new OkResult();
+        }
+
+
+
+        private void AddCorsHeaders()
+        {
+            HttpContext.Response.Cookies.Delete(".AspNetCore.Session");
+            HttpContext.Response.Headers.Remove("Access-Control-Allow-Origin");
+            if (HttpContext.Request.Headers.ContainsKey("Origin"))
+            {
+                var origin = HttpContext.Request.Headers["Origin"];
+                HttpContext.Response.Headers.Add("Access-Control-Allow-Origin", origin);
+
+            }
+            else HttpContext.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+
+            HttpContext.Response.Headers.Add("Access-Control-Allow-Credentials", "true");
+            HttpContext.Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE, PATCH");
+            HttpContext.Response.Headers.Add("Access-Control-Allow-Headers", "Content-Type, Authorization"); // Adjust based on your actual headers
         }
 
 
