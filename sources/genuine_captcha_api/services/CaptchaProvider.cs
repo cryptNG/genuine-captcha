@@ -16,7 +16,7 @@ namespace genuine_captcha_api.services
         {
             Aes myAes = Aes.Create();
             var triedMinutes = 0;
-            var _nowMinutes = (long)(DateTime.Now.Ticks / TimeSpan.TicksPerMinute);
+            var _nowMinutes = (long)(DateTime.UtcNow.Ticks / TimeSpan.TicksPerMinute);
             int solution = -1;
             while(solution<0  && validityInMinutes > triedMinutes){
                 using (SHA256 mySHA256 = SHA256.Create())
@@ -64,7 +64,7 @@ namespace genuine_captcha_api.services
             Aes myAes = Aes.Create();
             using (SHA256 mySHA256 = SHA256.Create())
             {
-                var _nowMinutes = (long)(DateTime.Now.Ticks / TimeSpan.TicksPerMinute);
+                var _nowMinutes = (long)(DateTime.UtcNow.Ticks / TimeSpan.TicksPerMinute);
                 myAes.Key = mySHA256.ComputeHash(Encoding.UTF8.GetBytes(secret + _nowMinutes.ToString()));
             }
             byte[] encrypted = EncryptStringToBytes_Aes(solution.ToString(), myAes.Key, myAes.IV);
