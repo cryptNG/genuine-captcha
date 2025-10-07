@@ -1,0 +1,23 @@
+{
+  "name": "@genuine-captcha/web-components",
+  "version": "1.0.10",
+  "type": "module",
+  "main": "genuine-captcha.js",
+  "module": "genuine-captcha.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cryptNG/genuine-captcha-vanillajs.git"
+  },
+  "keywords": [
+    "genuine-captcha"
+  ],
+  "author": "CryptNg",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cryptNG/genuine-captcha-vanillajs/issues"
+  },
+  "homepage": "https://github.com/cryptNG/genuine-captcha-vanillajs#readme"
+}
