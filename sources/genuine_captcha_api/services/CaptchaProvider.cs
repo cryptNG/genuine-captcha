@@ -12,13 +12,15 @@ namespace genuine_captcha_api.services
     {
         public static int validityInMinutes = 5;
 
-        public static bool CheckCaptchaResult(HttpContext context, string userInput, string captchaSecret,string secret)
+        public async static Task<bool> CheckCaptchaResult(HttpContext context, string userInput, string captchaSecret,string secret)
         {
             Aes myAes = Aes.Create();
             var triedMinutes = 0;
             var _nowMinutes = (long)(DateTime.UtcNow.Ticks / TimeSpan.TicksPerMinute);
             int solution = -1;
-            while(solution<0  && validityInMinutes > triedMinutes){
+
+            
+            while (solution<0  && validityInMinutes > triedMinutes){
                 using (SHA256 mySHA256 = SHA256.Create())
                 {
                     myAes.Key = mySHA256.ComputeHash(Encoding.UTF8.GetBytes(secret + (_nowMinutes - triedMinutes).ToString()));
@@ -44,11 +46,13 @@ namespace genuine_captcha_api.services
                 triedMinutes++;
             }
 
+            if(DateTime.Now.Ticks % 2 == 0) await Task.Delay(1000);
+
             return solution == Convert.ToInt32(userInput);
 
 
         }
-        public static (byte[] img, byte[] enc) GenerateCaptchaImageAsByteArray(HttpContext context, string secret)
+        public async static Task<(byte[] img, byte[] enc)> GenerateCaptchaImageAsByteArray(HttpContext context, string secret)
         {
 
             var rngBytes = new byte[4];
@@ -116,6 +120,9 @@ namespace genuine_captcha_api.services
 
                 var data = image.Encode(SKEncodedImageFormat.Png, 80);
                 data.SaveTo(output);
+
+                if (DateTime.Now.Ticks % 2 == 0) await Task.Delay(1000);
+
                 return (output.ToArray(), enciv.ToArray());
             }
 
