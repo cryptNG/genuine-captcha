@@ -179,54 +179,6 @@ Complete example with no framework dependencies:
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Genuine CAPTCHA - Vanilla JS Example</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 500px;
-            margin: 50px auto;
-            padding: 20px;
-        }
-        .captcha-container {
-            border: 1px solid #ddd;
-            padding: 20px;
-            border-radius: 8px;
-            background: #f9f9f9;
-        }
-        #captcha-image {
-            max-width: 100%;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            margin: 10px 0;
-        }
-        input, button {
-            padding: 10px;
-            margin: 5px 0;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-        }
-        button {
-            background: #4CAF50;
-            color: white;
-            cursor: pointer;
-            border: none;
-        }
-        button:hover {
-            background: #45a049;
-        }
-        .message {
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 4px;
-        }
-        .success {
-            background: #d4edda;
-            color: #155724;
-        }
-        .error {
-            background: #f8d7da;
-            color: #721c24;
-        }
-    </style>
 </head>
 <body>
     <div class="captcha-container">
