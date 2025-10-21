@@ -1,5 +1,3 @@
-
-
 //defer loading because of fastboot and similar
 
 export default class GenuineCaptcha extends HTMLElement {
@@ -9,6 +7,8 @@ export default class GenuineCaptcha extends HTMLElement {
   name='';
   gcApiUrl =  `https://api.genuine-captcha.io`;
   handleVerify=(a,b,c)=>{};
+  handleReset=(a)=>{};
+  
   _handleVerify=async (solution, secret)=>{
     if(this.name!==''){
       this.handleVerify(this.name,solution, secret);
@@ -16,7 +16,15 @@ export default class GenuineCaptcha extends HTMLElement {
       this.handleVerify(solution, secret);
     }
   }
-  handleReset=()=>{};
+  
+  _handleReset=async ()=>{
+    if(this.name!==''){
+      this.handleReset(this.name);
+    }else{
+      this.handleReset();
+    }
+  }
+  
   constructor() {
     super();
     this.texts = {};
@@ -193,8 +201,10 @@ export default class GenuineCaptcha extends HTMLElement {
 
     this.registerHandleVerify();
     this.registerHandleReset();
+    
     shadowRoot.querySelector('.captcha-container #refresh-captcha').addEventListener('click', (event) => {
       event.stopPropagation();
+      this._handleReset();
       this.loadCaptcha();
     });
 
@@ -207,14 +217,9 @@ export default class GenuineCaptcha extends HTMLElement {
       await Sleep(100);
       this.loadCaptcha();
     })();
-    
-
   }
 
-  
-
   registerHandleVerify = async () => {
-    const body = document.querySelector('body');
     while (window.genuineCaptchaHandleVerify === undefined) {
       await Sleep(100);
     }
@@ -222,7 +227,6 @@ export default class GenuineCaptcha extends HTMLElement {
   };
 
   registerHandleReset = async () => {
-    const body = document.querySelector('body');
     while (window.genuineCaptchaReset === undefined) {
       await Sleep(100);
     }
@@ -232,6 +236,7 @@ export default class GenuineCaptcha extends HTMLElement {
   static get observedAttributes() {
     return ['api-url', 'api-key','name'];
   }
+  
   attributeChangedCallback(name, oldValue, newValue) {
     if (name === 'api-url') this.gcApiUrl = newValue;
     if (name === 'name') this.name = newValue;
@@ -277,7 +282,6 @@ export default class GenuineCaptcha extends HTMLElement {
             this.shadowRoot.getElementById('refresh-captcha').style.display = 'inline-block';
         })
         .catch(error => {
-
             console.error("Error loading captcha:", error);
             this.shadowRoot.getElementById('captcha-loading').innerHTML = 
                 this.texts.errorLoadingCaptcha;
@@ -290,8 +294,6 @@ export default class GenuineCaptcha extends HTMLElement {
             alert(this.texts.alertNoSolution);
             return;
         }
-
-        
         
         fetch(`${this.gcApiUrl}/api/captcha/verify?captchaSolution=${solution}&captchaSecret=${encodeURIComponent(this.captchaSecret)}`, {
             mode: 'cors'
@@ -319,7 +321,7 @@ export default class GenuineCaptcha extends HTMLElement {
             const errorElement = this.shadowRoot.getElementById('captcha-error');
             errorElement.style.display = 'block';
             errorElement.classList.add('error');
-            resultElement.innerHTML = this.texts.responseFailedToVerify;
+            errorElement.innerHTML = this.texts.responseFailedToVerify;
         });
     }
 }

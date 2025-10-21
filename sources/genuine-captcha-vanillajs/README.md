@@ -69,7 +69,7 @@ The component supports the following attributes:
 ### Attributes
 
 - **`api-url`** (Optional): Custom genuine captcha API endpoint URL. Defaults to `https://api.genuine-captcha.io`
-- **`name`** (Optional): Unique identifier for the captcha instance. Required when using multiple captchas on the same page or when you want to identify which captcha was verified in the hook function.
+- **`name`** (Optional): Unique identifier for the captcha instance. Required when using multiple captchas on the same page or when you want to identify which captcha was verified/reset in the hook functions.
 
 ### Example with Configuration
 
@@ -125,15 +125,35 @@ window.genuineCaptchaHandleVerify = (name, solution, secret) => {
 };
 ```
 
-#### `window.genuineCaptchaReset()`
+#### `window.genuineCaptchaReset()` or `window.genuineCaptchaReset(name)`
 
-Hook for handling captcha reset events (currently not actively called by the component but available for future use).
+Called when the user clicks "Try Another CAPTCHA" to refresh/reset the captcha.
 
-**Example:**
+**Parameters (unnamed captcha):**
+- None
+
+**Parameters (named captcha):**
+- `name` (string): The name attribute value of the captcha instance
+
+**Example (unnamed captcha):**
 ```js
 window.genuineCaptchaReset = () => {
     console.log("CAPTCHA has been reset");
     // Perform any cleanup or state reset needed
+};
+```
+
+**Example (named captcha):**
+```js
+window.genuineCaptchaReset = (name) => {
+    console.log(`CAPTCHA "${name}" has been reset`);
+    
+    // Handle different captchas based on name
+    if (name === 'contact-captcha') {
+        // Clear contact form captcha state
+    } else if (name === 'signup-captcha') {
+        // Clear signup form captcha state
+    }
 };
 ```
 
@@ -161,7 +181,8 @@ window.genuineCaptchaReset = () => {
         };
 
         window.genuineCaptchaReset = () => {
-            console.log("CAPTCHA reset");
+            console.log("CAPTCHA reset - clearing form state");
+            // Clear any stored captcha data
         };
     </script>
 </head>
@@ -238,7 +259,7 @@ Language detection is based on `navigator.language` and happens automatically on
    - The solution is verified against the captcha secret via the API
    - On success: The protected content (slot content) is revealed and `genuineCaptchaHandleVerify` is called
    - On failure: An error message is displayed and the user can try again
-5. **Manual Refresh**: Users can click "Try Another CAPTCHA" to load a new challenge at any time
+5. **Manual Refresh**: Users can click "Try Another CAPTCHA" to load a new challenge at any time, triggering the `genuineCaptchaReset` hook
 
 ### Captcha Lifecycle
 
@@ -261,6 +282,7 @@ Language detection is based on `navigator.language` and happens automatically on
 └──────┬──────┘                                │
        │                                       │
        │ User clicks "Try Another CAPTCHA"     │
+       │  → genuineCaptchaReset() called       │
        │◄──────────────────────────────────────┘
        │
        ▼
@@ -271,11 +293,11 @@ Language detection is based on `navigator.language` and happens automatically on
 └──────┬──────┘
        │
        ▼
-┌─────────────┐     Success        ┌──────────────┐
-│   Verify    │───────────────────▶│ Show Content │
-│  Solution   │                     │ & Call Hook  │
-└──────┬──────┘                     └──────────────┘
-       │
+┌─────────────┐     Success        ┌────────────────────┐
+│   Verify    │───────────────────▶│   Show Content &   │
+│  Solution   │                     │genuineCaptchaHandle│
+└──────┬──────┘                     │    Verify()        │
+       │                            └────────────────────┘
        │ Failure
        ▼
 ┌─────────────┐
@@ -295,7 +317,7 @@ The component has several visual states:
 
 ## Named Instances
 
-When using multiple captchas on the same page, provide unique `name` attributes to identify each instance:
+When using multiple captchas on the same page, provide unique `name` attributes to identify each instance in both verify and reset hooks:
 
 ```html
 <form id="contactForm">
@@ -311,6 +333,7 @@ When using multiple captchas on the same page, provide unique `name` attributes 
 </form>
 
 <script>
+    // Handle verification for multiple captchas
     window.genuineCaptchaHandleVerify = (name, solution, secret) => {
         console.log(`Captcha "${name}" verified`);
         
@@ -320,6 +343,19 @@ When using multiple captchas on the same page, provide unique `name` attributes 
         } else if (name === 'newsletter-captcha') {
             // Handle newsletter form
             document.getElementById('newsletterForm').submit();
+        }
+    };
+    
+    // Handle reset for multiple captchas
+    window.genuineCaptchaReset = (name) => {
+        console.log(`Captcha "${name}" reset`);
+        
+        if (name === 'contact-captcha') {
+            // Clear contact form state
+            document.getElementById('contactForm').reset();
+        } else if (name === 'newsletter-captcha') {
+            // Clear newsletter form state
+            document.getElementById('newsletterForm').reset();
         }
     };
 </script>
@@ -545,6 +581,12 @@ def submit():
         captchaData[name] = { solution, secret };
     };
     
+    window.genuineCaptchaReset = (name) => {
+        console.log(`Captcha "${name}" reset`);
+        // Clear stored data for this captcha
+        delete captchaData[name];
+    };
+    
     document.getElementById('contactForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const data = captchaData['contact-form'];
@@ -585,6 +627,67 @@ def submit():
 </div>
 ```
 
+### Example 6: Reset Hook with State Management
+
+```html
+<form id="complexForm">
+    <input type="email" name="email" required>
+    <div id="captcha-status"></div>
+    
+    <genuine-captcha name="complex-form">
+        <button type="submit">Submit</button>
+    </genuine-captcha>
+</form>
+
+<script>
+    let formState = {
+        captchaVerified: false,
+        captchaSolution: null,
+        captchaSecret: null
+    };
+    
+    window.genuineCaptchaHandleVerify = (name, solution, secret) => {
+        formState.captchaVerified = true;
+        formState.captchaSolution = solution;
+        formState.captchaSecret = secret;
+        document.getElementById('captcha-status').textContent = '✓ Verified';
+        document.getElementById('captcha-status').style.color = 'green';
+    };
+    
+    window.genuineCaptchaReset = (name) => {
+        // Clear all captcha state when user clicks refresh
+        formState.captchaVerified = false;
+        formState.captchaSolution = null;
+        formState.captchaSecret = null;
+        document.getElementById('captcha-status').textContent = '';
+        console.log('Form state cleared due to captcha reset');
+    };
+    
+    document.getElementById('complexForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        if (!formState.captchaVerified) {
+            alert('Please complete the captcha first');
+            return;
+        }
+        
+        // Submit with captcha data
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData);
+        
+        await fetch('/api/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                ...data,
+                captchaSolution: formState.captchaSolution,
+                captchaSecret: formState.captchaSecret
+            })
+        });
+    });
+</script>
+```
+
 ## Troubleshooting
 
 ### Captcha doesn't load
@@ -599,12 +702,16 @@ def submit():
 
 ### Multiple captchas interfere with each other
 - Assign unique `name` attributes to each captcha instance
-- Update your verify hook to handle the `name` parameter
+- Update your verify and reset hooks to handle the `name` parameter
 
 ### Custom hooks not being called
 - Define hooks before loading the component script
 - Check for JavaScript errors that might prevent hook registration
 - Verify hook function names are exactly: `window.genuineCaptchaHandleVerify` and `window.genuineCaptchaReset`
+
+### Reset hook not triggered
+- The reset hook is currently only called when the user manually clicks "Try Another CAPTCHA"
+- Auto-refresh (after expiry) does not trigger the reset hook
 
 ## API Response Format
 
