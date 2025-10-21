@@ -6,8 +6,16 @@ export default class GenuineCaptcha extends HTMLElement {
   shadowRoot = null;
   captchaSecret=null;
   timerId=null;
+  name='';
   gcApiUrl =  `https://api.genuine-captcha.io`;
-  handleVerify=(a,b)=>{};
+  handleVerify=(a,b,c)=>{};
+  _handleVerify=async (solution, secret)=>{
+    if(this.name!==''){
+      this.handleVerify(this.name,solution, secret);
+    }else{
+      this.handleVerify(solution, secret);
+    }
+  }
   handleReset=()=>{};
   constructor() {
     super();
@@ -46,7 +54,7 @@ export default class GenuineCaptcha extends HTMLElement {
         responseFailedToVerify: '<strong>Error:</strong> Failed to verify. Please try again.'
       };
     }
-    this.prompt = '';
+    
     this.captchaSecret = '';
     const template = document.getElementById('genuine-captcha');
     const templateContent = template.content;
@@ -57,20 +65,8 @@ export default class GenuineCaptcha extends HTMLElement {
     const style = document.createElement('style');
     style.textContent = `
           :host{
-            --underline-color:red;
-            --underline-style:dashed;
-            --underline-width:0.1em;
-            --underline-top:calc(50% + 0.5em);
-            --text-color:inherited;
-            --text-family:revert;
-            --text-size:auto;
-            --text-cursor:pointer;
-            --underline-rgb:linear-gradient(90deg, #e50b58,#b29d23,#55ddbd);
-            --underline-rgb-1:linear-gradient(90deg, #ae1ffd,#ff3c34,#9bbf24);
-            --underline-rgb-2:linear-gradient(130deg,#2E3192,#1BFFFF 76.05%);
-            --underline-rgb-3:linear-gradient(130deg,#ff7a18,#af002d 41.07%,#319197 76.05%);
-            --underline-rgb-5:linear-gradient(130deg,#ff7a18,#af002d 41.07%,#319197 76.05%);
-            --asterisk-margin-right:0.2em;
+            --verify-button-background-color:#6366f1;
+            --verify-button-background-color-hover:#4346d4;
           }
 
           .captcha-container {
@@ -78,8 +74,9 @@ export default class GenuineCaptcha extends HTMLElement {
             flex-direction: column;
             align-items: center;
             gap: 20px;
+            width:100%;
         }
-            #captcha-display {
+          #captcha-display {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -132,10 +129,16 @@ export default class GenuineCaptcha extends HTMLElement {
             border: 1px solid #e2e8f0;
             border-radius: 6px;
         }
+
+        #allowed-action{
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
         
         button {
             padding: 8px 16px;
-            background-color: #6366f1;
+            background-color: var(--verify-button-background-color);
             color: white;
             border: none;
             border-radius: 6px;
@@ -144,7 +147,7 @@ export default class GenuineCaptcha extends HTMLElement {
         }
         
         button:hover {
-            background-color: #4f46e5;
+            background-color: var(--verify-button-background-color-hover);
         }
         
         #captcha-error {
@@ -188,7 +191,6 @@ export default class GenuineCaptcha extends HTMLElement {
     shadowRoot.querySelector('.captcha-container #refresh-captcha').innerText = this.texts.refreshButton;
     shadowRoot.querySelector('.captcha-container #loading-catcha').innerText = this.texts.loadingCaptcha;
 
-    this.registerOptionsChange();
     this.registerHandleVerify();
     this.registerHandleReset();
     shadowRoot.querySelector('.captcha-container #refresh-captcha').addEventListener('click', (event) => {
@@ -209,13 +211,7 @@ export default class GenuineCaptcha extends HTMLElement {
 
   }
 
-  registerOptionsChange = async () => {
-    const body = document.querySelector('body');
-    while (body.genuineCaptchaRegisterOptionChange === undefined) {
-      await Sleep(100);
-    }
-    body.genuineCaptchaRegisterOptionChange(this.handleOptionsChange);
-  };
+  
 
   registerHandleVerify = async () => {
     const body = document.querySelector('body');
@@ -233,23 +229,12 @@ export default class GenuineCaptcha extends HTMLElement {
     this.handleReset = window.genuineCaptchaReset;
   };
 
-
-  handleOptionsChange = (options) => {
-    if ((options?.highlight || null) !== null) {
-      options.highlight
-        .split(',')
-        .forEach((hl) =>
-          this.shadowRoot.querySelector('.captcha-container').classList.add(hl)
-        );
-    }
-
-  };
-
   static get observedAttributes() {
-    return ['api-url', 'api-key'];
+    return ['api-url', 'api-key','name'];
   }
   attributeChangedCallback(name, oldValue, newValue) {
     if (name === 'api-url') this.gcApiUrl = newValue;
+    if (name === 'name') this.name = newValue;
   }
 
   startTimer=(delay)=> {
@@ -281,7 +266,7 @@ export default class GenuineCaptcha extends HTMLElement {
             // Store the secret for verification later
             this.captchaSecret = data.SecretAsBase64;
 
-            const validTill= data.validTill || Date.now() + (1000 * 60 * 5); //5 minutes from now
+            const validTill= (data.validTill || Date.now() + (1000 * 60 * 5))-2000; //5 minutes from now
         
             this.startTimer(validTill - Date.now()); //reload 4 minutes before expiry
             
@@ -313,7 +298,7 @@ export default class GenuineCaptcha extends HTMLElement {
         })
         .then(response => {
             if (response.ok) {
-                this.shadowRoot.getElementById('allowed-action').style.display = 'block';
+                this.shadowRoot.getElementById('allowed-action').style.display = 'flex';
                 const resultElement = this.shadowRoot.querySelector('.captcha-result');
                 resultElement.classList.add( 'success');
                 resultElement.innerHTML = this.texts.responseOk;
@@ -321,7 +306,7 @@ export default class GenuineCaptcha extends HTMLElement {
                 this.shadowRoot.getElementById('captcha-display').style.display = 'none';
                 this.shadowRoot.getElementById('captcha-input-container').style.display = 'none';
                 
-                this.handleVerify(solution, this.captchaSecret);
+                this._handleVerify(solution, this.captchaSecret);
             } else {
                 const errorElement = this.shadowRoot.getElementById('captcha-error');
                 errorElement.style.display = 'block';
